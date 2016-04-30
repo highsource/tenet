@@ -35,7 +35,7 @@ public class GraphBuilder {
 			});
 			graph.addEdge(startNode, endNode, link);
 			// TODO this must not be necessarily true
-			graph.addEdge(endNode, startNode, link);
+			graph.addEdge(endNode, startNode, link.reverse());
 		});
 		return graph;
 	}

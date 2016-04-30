@@ -20,6 +20,10 @@ public class RailwayLink extends Feature<LineString, double[][], Properties> {
 		super(geometry, properties);
 	}
 
+	public RailwayLink reverse() {
+		return new RailwayLink(getGeometry().reverse(), getProperties().reverse());
+	}
+
 	public static class Properties {
 		private final String id;
 		private final String startNodeId;
@@ -50,6 +54,11 @@ public class RailwayLink extends Feature<LineString, double[][], Properties> {
 			this.railwayLineCode = railwayLineCode;
 			this.railwayLineGeographicalName = railwayLineGeographicalName;
 			this.railwayLinkSequenceId = railwayLinkSequenceId;
+		}
+
+		public Properties reverse() {
+			return new Properties(getId(), getEndNodeId(), getStartNodeId(), getRailwayLineId(), getRailwayLineCode(),
+					getRailwayLineGeographicalName(), getRailwayLinkSequenceId());
 		}
 
 		public String getId() {
