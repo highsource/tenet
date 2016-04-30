@@ -22,4 +22,9 @@ public class Feature<G extends Geometry<C>, C, P> {
 	public P getProperties() {
 		return properties;
 	}
+	
+	@Override
+	public String toString() {
+		return getProperties().toString();
+	}
 }

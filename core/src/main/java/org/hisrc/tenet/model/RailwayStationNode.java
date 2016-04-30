@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.Validate;
-import org.hisrc.tenet.feature.model.Feature;
 import org.hisrc.tenet.geometry.model.Point;
 import org.hisrc.tenet.model.RailwayStationNode.Properties;
 
@@ -13,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RailwayStationNode extends Feature<Point, double[], Properties> {
+public class RailwayStationNode extends RailwayBaseNode<Properties> {
 
 	@JsonCreator
 	public RailwayStationNode(@JsonProperty("geometry") Point geometry,
@@ -21,7 +20,7 @@ public class RailwayStationNode extends Feature<Point, double[], Properties> {
 		super(geometry, properties);
 	}
 
-	public static class Properties extends RailwayNode.Properties {
+	public static class Properties extends RailwayBaseNode.Properties {
 		private final String railwayStationCode;
 
 		@JsonCreator
@@ -41,7 +40,7 @@ public class RailwayStationNode extends Feature<Point, double[], Properties> {
 
 		@Override
 		public String toString() {
-			return "RailwayNode [" + getId() + ", " + getRailwayStationCode()
+			return "RailwayStationNode [" + getId() + ", " + getRailwayStationCode()
 					+ (getGeographicalName() == null ? "" : (" (" + getGeographicalName() + ")")) + "].";
 		}
 
