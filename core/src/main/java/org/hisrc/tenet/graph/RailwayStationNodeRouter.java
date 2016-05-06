@@ -1,11 +1,15 @@
 package org.hisrc.tenet.graph;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.Validate;
 import org.hisrc.tenet.jgrapht.ThrowingEdgeFactory;
@@ -36,6 +40,53 @@ public class RailwayStationNodeRouter {
 		this.railwayStationNodesByRailwayStationCode = railwayStationNodesByRailwayStationCode;
 		this.railwayGraph = railwayGraph;
 		this.railwayTransitionGraph = railwayTransitionGraph;
+	}
+
+	public GraphPath<RailwayLink, RailwayLinkTransition> route(String... railwayStationCodes) {
+		return route(Arrays.asList(railwayStationCodes));
+	}
+
+	public GraphPath<RailwayLink, RailwayLinkTransition> route(List<String> railwayStationCodes) {
+		Validate.noNullElements(railwayStationCodes);
+		Validate.isTrue(railwayStationCodes.size() >= 2);
+
+//		if (railwayStationCodes.size() == 2) {
+//			return route(railwayStationCodes.get(0), railwayStationCodes.get(1));
+//		} else 
+		{
+			final List<Set<RailwayLink>> links = new ArrayList<>(railwayStationCodes.size());
+
+			final String firstRailwayStationCode = railwayStationCodes.get(0);
+
+			final Set<RailwayStationNode> firstRailwayStationNodes = railwayStationNodesByRailwayStationCode
+					.get(firstRailwayStationCode);
+			if (firstRailwayStationNodes.isEmpty()) {
+				throw new IllegalArgumentException(MessageFormat
+						.format("No railway station nodes found for the code [{0}].", firstRailwayStationCode));
+			}
+
+			final Set<RailwayLink> firstRailwayLinks = firstRailwayStationNodes.stream()
+					.map(railwayGraph::outgoingEdgesOf).flatMap(Collection::stream).collect(Collectors.toSet());
+			links.add(firstRailwayLinks);
+
+			railwayStationCodes.subList(1, railwayStationCodes.size()).forEach(railwayStationCode -> {
+				final Set<RailwayStationNode> railwayStationNodes = railwayStationNodesByRailwayStationCode
+						.get(railwayStationCode);
+				if (railwayStationNodes.isEmpty()) {
+					throw new IllegalArgumentException(MessageFormat
+							.format("No railway station nodes found for the code [{0}].", railwayStationCode));
+				}
+
+				final Set<RailwayLink> railwayLinks = railwayStationNodes.stream().map(railwayGraph::incomingEdgesOf)
+						.flatMap(Collection::stream).collect(Collectors.toSet());
+				links.add(railwayLinks);
+			});
+
+			final RailwayTransitionGraphRouter railwayTransitionGraphRouter = new RailwayTransitionGraphRouter(
+					railwayTransitionGraph);
+			return railwayTransitionGraphRouter.route(links);
+		}
+
 	}
 
 	public GraphPath<RailwayLink, RailwayLinkTransition> route(String startRailwayStationCode,

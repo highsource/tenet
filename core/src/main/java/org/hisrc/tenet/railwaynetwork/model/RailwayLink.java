@@ -25,8 +25,7 @@ public class RailwayLink extends Feature<LineString, double[][], Properties> {
 	}
 
 	public double getWeight() {
-		// TODO calculate length
-		return 1;
+		return getGeometry().getLength();
 	}
 	
 	public boolean isInForwardDirection()

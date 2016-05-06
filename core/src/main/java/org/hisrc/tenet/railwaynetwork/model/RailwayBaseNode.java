@@ -19,6 +19,8 @@ public abstract class RailwayBaseNode<P extends Properties> extends Feature<Poin
 		super(geometry, properties);
 	}
 
+	public abstract boolean canTurn();
+
 	public static class Properties {
 		private final String id;
 		private final String geographicalName;

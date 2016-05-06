@@ -19,6 +19,11 @@ public class RailwayStationNode extends RailwayBaseNode<Properties> {
 			@JsonProperty("properties") Properties properties) {
 		super(geometry, properties);
 	}
+	
+	@Override
+	public boolean canTurn() {
+		return true;
+	}
 
 	public static class Properties extends RailwayBaseNode.Properties {
 		private final String railwayStationCode;

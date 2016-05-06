@@ -19,6 +19,11 @@ public class RailwayStationsNode extends RailwayBaseNode<Properties> {
 				new Properties(railwayStationCode));
 	}
 
+	@Override
+	public boolean canTurn() {
+		return true;
+	}
+
 	public static class Properties extends RailwayBaseNode.Properties {
 		private final String railwayStationCode;
 

@@ -11,6 +11,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RailwayNode extends RailwayBaseNode<Properties> {
+	
+	@Override
+	public boolean canTurn() {
+		return false;
+	}
 
 	@JsonCreator
 	public RailwayNode(@JsonProperty("geometry") Point geometry, @JsonProperty("properties") Properties properties) {
