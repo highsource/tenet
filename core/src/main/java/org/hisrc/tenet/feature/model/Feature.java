@@ -19,10 +19,15 @@ public class Feature<G extends Geometry<C>, C, P> {
 		return geometry;
 	}
 
+	public G getProjectedGeometry() {
+		// TODO
+		return getGeometry();
+	}
+
 	public P getProperties() {
 		return properties;
 	}
-	
+
 	@Override
 	public String toString() {
 		return getProperties().toString();
