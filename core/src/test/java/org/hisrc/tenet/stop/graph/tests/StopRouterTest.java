@@ -48,8 +48,10 @@ public class StopRouterTest {
 
 	@Test
 	public void routesICE_578() throws JsonGenerationException, JsonMappingException, IOException {
-		final GraphPath<RailwayLink, RailwayLinkTransition> path = router.route("8000096", "8000244", "8070003",
-				"8000105", "8003200", "8000128", "8000152", "8002549", "8002548", "8002553");
+		final GraphPath<RailwayLink, RailwayLinkTransition> path = router.route(
+				"8000096", "8000244", "8070003",
+				"8000105", "8003200", "8000128",
+				"8000152", "8002549", "8002548", "8002553");
 		Assert.assertNotNull(path);
 		System.out.println(path);
 
@@ -69,8 +71,50 @@ public class StopRouterTest {
 
 		final ObjectMapper mapper = new ObjectMapper();
 		mapper.enable(SerializationFeature.INDENT_OUTPUT);
-		mapper.writeValue(new File("out.geojson"), p);
+		mapper.writeValue(new File("ICE_578.geojson"), p);
 	}
+	
+	@Test
+	public void routesICE_885() throws JsonGenerationException, JsonMappingException, IOException {
+		final GraphPath<RailwayLink, RailwayLinkTransition> path = router.route(
+				"8002553", "8002548", "8002549",
+				"8000147", "8000152", "8000128",
+				"8003200", "8000115", "8000260",
+				"8000284", "8000183", "8000261");
+		Assert.assertNotNull(path);
+		System.out.println(path);
+
+		List<RailwayLink> railwayLinks = new ArrayList<>(path.getEdgeList().size() + 1);
+		railwayLinks.add(path.getStartVertex());
+		path.getEdgeList().stream().map(RailwayLinkTransition::getEnd).forEach(railwayLinks::add);
+
+		double[][][] coordinates = new double[railwayLinks.size()][][];
+		for (int index = 0; index < railwayLinks.size(); index++) {
+			final RailwayLink railwayLink = railwayLinks.get(index);
+			final LineString geometry = railwayLink.getGeometry();
+			coordinates[index] = geometry.getCoordinates();
+		}
+
+		final RailwayTransitionPath p = new RailwayTransitionPath(new MultiLineString(coordinates),
+				new RailwayTransitionPath.Properties());
+
+		final ObjectMapper mapper = new ObjectMapper();
+		mapper.enable(SerializationFeature.INDENT_OUTPUT);
+		mapper.writeValue(new File("ICE_885.geojson"), p);
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	@Test
 	public void routesIC_2273() throws JsonGenerationException, JsonMappingException, IOException {
@@ -123,7 +167,7 @@ public class StopRouterTest {
 
 		final ObjectMapper mapper = new ObjectMapper();
 		mapper.enable(SerializationFeature.INDENT_OUTPUT);
-		mapper.writeValue(System.out, p);
+		mapper.writeValue(new File("IC_2273.geojson"), p);
 
 	}
 

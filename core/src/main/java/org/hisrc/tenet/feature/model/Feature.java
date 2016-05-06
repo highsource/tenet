@@ -14,19 +14,13 @@ public class Feature<G extends Geometry<C>, C, P> {
 		this.geometry = geometry;
 		this.properties = properties;
 	}
-	
-	public String getType()
-	{
+
+	public String getType() {
 		return "Feature";
 	}
 
 	public G getGeometry() {
 		return geometry;
-	}
-
-	public G getProjectedGeometry() {
-		// TODO
-		return getGeometry();
 	}
 
 	public P getProperties() {

@@ -87,8 +87,6 @@ public class RailwayTransitionGraphRouter {
 	}
 
 	private GraphPath<RailwayLink, RailwayLinkTransition> route(Set<RailwayLink> startLinks, RailwayLink endLink) {
-		final Set<GraphPath<RailwayLink, RailwayLinkTransition>> paths = new TreeSet<>(
-				Comparator.comparingDouble(p -> p.getWeight()));
 		return startLinks.stream().map(startLink -> route(startLink, endLink)).filter(Objects::nonNull)
 				.min(Comparator.comparingDouble(p -> p.getWeight())).orElse(null);
 	}
